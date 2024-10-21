@@ -116,8 +116,16 @@ const login = async (req, res) => {
     const { email, password } = req.body;
 
     // Input validation (add more checks as needed)
-    if (!email || !password) {
-      return res.status(400).json({ message: 'Email and password are required' });
+
+
+    // if (!email || !password) {
+    //   return res.status(400).json({ message: 'Email and password are required' });
+    // }
+    //OR
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
 
     // Check if user exists
