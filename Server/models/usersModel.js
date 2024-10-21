@@ -1,26 +1,70 @@
 const { DataTypes, INTEGER } = require("sequelize");
 const { sequelize } = require("./index");
+const { type } = require("express/lib/response");
+const { Hooks } = require("sequelize/lib/hooks");
 
 module.exports = (sequelize, DataTypes) => {
 
   const User = sequelize.define('user', {
-    firstname: DataTypes.STRING,
-    lastname: DataTypes.STRING,
-    phoneNumber: DataTypes.STRING,
-    identificationNumber: DataTypes.STRING,
-    identificationType: DataTypes.STRING,
-    password: DataTypes.STRING,
-    isVerified: DataTypes.STRING,
-    address: DataTypes.STRING,
-    email: DataTypes.STRING,
-    // balance: {
-    //   type: INTEGER,
-    //   default: 0
-      
-    // }
-  }, {
-    freezeTableName : true
-  });
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    firstName: {
+      type: DataTypes.String,
+      allowNull: false,
+    },
+    lastName: {
+      type: DataTypes.String,
+      allowNull: false,
+    },
+    phoneNumber: {
+      type: DataTypes.String,
+      allowNull: false,
+      unique: true
+    },
+    password: {
+      type: DataTypes.String,
+      allowNull: false,
+      unique: true
+    },
+    address: {
+      type: DataTypes.String,
+      allowNull: false,
+    },
+    email: {
+      type: DataTypes.String,
+      allowNull: false,
+      unique: true,
+      validate: {
+        isEmail: true,
+      }
+    },
+    accountNumber: {
+      type: DataTypes.String,
+      allowNull: false,
+    },
+    createdAt: {
+      type: DataTypes.Date,
+      defaultValue: DataTypes.Now
+    },
+    updatedAt: {
+      type: DataTypes.Date,
+      defaultValue: DataTypes.Now
+    },
+  },
+    {
+      Hooks: {
+        beforeCreate: (user) => {
+          user.accountNumber = User.phoneNumber;
+        }
+      }
+    },
+    {
+      freezeTableName: true
+    }
+  );
   return User;
 }
 

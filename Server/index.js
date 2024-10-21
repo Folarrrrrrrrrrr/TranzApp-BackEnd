@@ -29,7 +29,7 @@ app.use(cors(corsOptions));
 
 //setting up routes
 
-const userRouter = require('./routes/usersRoutes')
+const userRouter = require('./services/userServices/userRoutes')
 const accTypeRouter = require('./routes/accountTypeRoutes')
 const customerAccountRoutes = require('./routes/customerAccountRoutes')
 // const customerAccountRoutes = require('./routes/customerAccountRoutes')

@@ -20,13 +20,13 @@ module.exports = userRouters;
 
 
  
-const getAllRegistrations = async (req, res)=>{
-let registeredUsers = await db.models.User.findAll({})
-res.status(200).send({
-  message: 'welcome',
-  success: true
-});
-};
+// const getAllRegistrations = async (req, res)=>{
+// let registeredUsers = await db.models.User.findAll({})
+// res.status(200).send({
+//   message: 'welcome',
+//   success: true
+// });
+// };
 
 //Login Logics
 

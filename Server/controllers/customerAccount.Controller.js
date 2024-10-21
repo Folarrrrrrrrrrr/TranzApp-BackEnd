@@ -41,7 +41,6 @@ const  getAccountsByPK = async ( req, res) =>{
     const  customerAcount = await customerAccs.findOne({where: {id:id}})
     res(200).send(customerAcount);
 }
-
 //2.     Getting an account by id 
 
 const  updateAccountsByPK = async ( req, res) =>{
