@@ -23,15 +23,15 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    
-    const { 
+
+    const {
       firstname,
       lastname,
-      phoneNumber, 
-      password, 
-      address, 
-      email 
-      } = req.body;
+      phoneNumber,
+      password,
+      address,
+      email
+    } = req.body;
 
     // Duplicate User check 
     const alreadyExistUser = await db.models.User.findOne({ where: { email } });
@@ -144,12 +144,24 @@ const login = async (req, res) => {
     const payload = {
       user: {
         id: user.id,
-        username: user.email
+        phoneNumber: user.phoneNumber
       }
     };
-    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+    // Generate access token
+    const accessToken = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: '15m',
+    });
+    // Generate refresh token
+    const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {
       expiresIn: '1d',
     });
+
+    //refresh token stored in HttpOnly cookie
+    res.cookie('refreshToken', refreshToken,{
+      httpOnly:true,
+      secure:true,
+      
+    } )
 
     // Respond with token
     res.status(200).json({
